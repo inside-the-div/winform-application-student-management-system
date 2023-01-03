@@ -63,4 +63,10 @@ Then all the information automatically fills up in the input field. We can make 
 want then click the update button and update that student successfully.
 </value>
   </data>
+  <data name="label8.Text" xml:space="preserve">
+    <value>--&gt; Name length should be maximum 50 characters and minimum 3 characters long
+--&gt; Mobile length should be maximum 20 character and minimum 11 character long
+--&gt; Age should be older than 10 years and uder 40 years
+</value>
+  </data>
 </root>

@@ -114,19 +114,18 @@
             this.label7.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.label7.Location = new System.Drawing.Point(21, 222);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(48, 21);
+            this.label7.Size = new System.Drawing.Size(134, 21);
             this.label7.TabIndex = 1;
-            this.label7.Text = "Note";
+            this.label7.Text = "Validation Rules";
             // 
             // label8
             // 
             this.label8.AutoSize = true;
             this.label8.Location = new System.Drawing.Point(29, 251);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(355, 30);
+            this.label8.Size = new System.Drawing.Size(455, 45);
             this.label8.TabIndex = 2;
-            this.label8.Text = "You can not add name over 50 characters long\r\nFor new student you must enter uniq" +
-    "ue email and mobile number";
+            this.label8.Text = resources.GetString("label8.Text");
             // 
             // Guideline
             // 

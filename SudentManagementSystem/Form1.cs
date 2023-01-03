@@ -6,10 +6,12 @@ namespace SudentManagementSystem
 {
     public partial class Form1 : Form
     {
-        public int tID;
-        public string Gender;
+        public int StudentID; // used when we delete and updete
+        public string Gender; // used when select gender
         public int rowId;
-        SqlConnection con = new SqlConnection("Data Source=.; Initial Catalog=STUDENT; TrustServerCertificate=True; Integrated Security=True ");
+        // databae connection
+        // db name: SMSDB
+        SqlConnection DBconnection = new SqlConnection("Data Source=.; Initial Catalog=SMSDB; TrustServerCertificate=True; Integrated Security=True ");
         public Form1()
         {
             InitializeComponent();
@@ -17,7 +19,7 @@ namespace SudentManagementSystem
         }
         public void DisplayData()
         {
-            SqlDataAdapter sqad = new SqlDataAdapter("select * from StudentInfo", con);
+            SqlDataAdapter sqad = new SqlDataAdapter("select * from Students", DBconnection);
             DataTable dt = new DataTable();
             sqad.Fill(dt);
             dataGridView1.DataSource = dt;
@@ -45,7 +47,6 @@ namespace SudentManagementSystem
             int DuplicateEmail = CountDuplicateEmail(Email.Text);
             int DuplicateMobile = CountDuplicateMobile(Email.Text);
 
-
             if (NameError != "")
             {
                 MessageBox.Show(NameError);
@@ -61,7 +62,7 @@ namespace SudentManagementSystem
                 MessageBox.Show(EmailError);
                 return;
             }
-            else if (0 < DuplicateEmail)
+            else if (DuplicateEmail > 0)
             {
                 MessageBox.Show("This eamil is already used");
                 return;
@@ -76,7 +77,7 @@ namespace SudentManagementSystem
                 MessageBox.Show(MobileError);
                 return;
             }
-            else if (0 < DuplicateMobile)
+            else if (DuplicateMobile > 0)
             {
                 MessageBox.Show("This Mobile is already used");
                 return;
@@ -94,15 +95,15 @@ namespace SudentManagementSystem
             }
             else
             {
-                string sqlQuery = "INSERT INTO StudentInfo (Name, Age, MobileNumber, Email, Gender, Class, Ad_date) VALUES ('" + StudentName.Text + "' ,'" + Convert.ToInt32(Age.Text) + "','" + Mobile.Text + "','" + Email.Text + "','" + Gender + "','" + StudentClass.SelectedItem + "','" + Date.Value.ToShortDateString() + "')";
+                string sqlQuery = "INSERT INTO Students (Name, Age, MobileNumber, Email, Gender, Class, Ad_date) VALUES ('" + StudentName.Text + "' ,'" + Convert.ToInt32(Age.Text) + "','" + Mobile.Text + "','" + Email.Text + "','" + Gender + "','" + StudentClass.SelectedItem + "','" + Date.Value.ToShortDateString() + "')";
 
-                con.Open();
-                SqlCommand cm = new SqlCommand(sqlQuery, con);
+                DBconnection.Open();
+                SqlCommand cm = new SqlCommand(sqlQuery, DBconnection);
                 if (cm.ExecuteNonQuery() > 0)
                 {
                     MessageBox.Show("Saved Successfuly");
                 }
-                con.Close();
+                DBconnection.Close();
                 AllClear();
                 DisplayData();
             }
@@ -119,68 +120,57 @@ namespace SudentManagementSystem
             if (NameError != "")
             {
                 MessageBox.Show(NameError);
-                return;
             }
             else if (AgeError != "")
             {
                 MessageBox.Show(AgeError);
-                return;
             }
             else if (EmailError != "")
             {
                 MessageBox.Show(EmailError);
-                return;
             }
-            else if (1<DuplicateEmail)
+            else if (DuplicateEmail > 1)
             {
                 MessageBox.Show("This eamil is already used");
-                return;
             }
             else if (StudentClass.SelectedIndex == -1)
             {
                 MessageBox.Show("Select Your class");
-                return;
             }
             else if (MobileError != "")
             {
                 MessageBox.Show(MobileError);
-                return;
             }
-            else if (1<DuplicateMobile)
+            else if (DuplicateMobile > 1)
             {
                 MessageBox.Show("This Mobile is already used");
-                return;
             }
             else if (Date.Value > DateTime.Today)
             {
                 MessageBox.Show("You Can Not Set Future Date");
                 Date.Value = DateTime.Today;
-                return;
             }
             else if (male.Checked != true && female.Checked != true && other.Checked != true)
             {
-
                 MessageBox.Show("Select Your Gender");
-                return;
             }
             else
             {
-                string sqlQuery =   "update StudentInfo set Name = " + "'" + StudentName.Text +
+                string sqlQuery = "update Students set Name = " + "'" + StudentName.Text +
                                     "' , " + "Age = " + "'" + Convert.ToInt32(Age.Text) + 
                                     "' , MobileNumber = " + "'" + Mobile.Text + 
                                     "' , Email = " + "'" + Email.Text + 
                                     "' , Gender = " + "'" + Gender + 
                                     "' , Class = " + "'" + StudentClass.SelectedItem + 
                                     "' , Ad_date = " + "'" + Date.Value.ToShortDateString() + 
-                                    "'   where ID = " + tID;
-                con.Open();
-                SqlCommand cm = new SqlCommand(sqlQuery, con);
+                                    "'   where ID = " + StudentID;
+                DBconnection.Open();
+                SqlCommand cm = new SqlCommand(sqlQuery, DBconnection);
                 if (cm.ExecuteNonQuery() > 0)
                 {
                     MessageBox.Show("Update Successfuly");
                 }
-
-                con.Close();
+                DBconnection.Close();
                 AllClear();
                 DisplayData();
             }
@@ -188,21 +178,21 @@ namespace SudentManagementSystem
 
         private void delete_Click(object sender, EventArgs e)
         {
-            con.Open();
+            DBconnection.Open();
             int TotalRow = dataGridView1.Rows.Count;
             for (int i = 0; i < TotalRow; i++)
             {
                 DataGridViewRow gridr = dataGridView1.Rows[i];
                 if (gridr.Selected == true)
                 {
-                    string sqlQuery = "DELETE FROM StudentInfo WHERE ID= '" + dataGridView1.Rows[i].Cells[0].Value + "'";
-                    SqlCommand cmd = new SqlCommand(sqlQuery, con);
+                    string sqlQuery = "DELETE FROM Students WHERE ID= '" + dataGridView1.Rows[i].Cells[0].Value + "'";
+                    SqlCommand cmd = new SqlCommand(sqlQuery, DBconnection);
                     cmd.ExecuteNonQuery();
                 }
             }
             DisplayData();
             MessageBox.Show("Data Deleted.");
-            con.Close();
+            DBconnection.Close();
         }
 
         private void Exit_Click(object sender, EventArgs e)
@@ -220,6 +210,10 @@ namespace SudentManagementSystem
             if (StudenName == "")
             {
                 NameErrorMessage = "You must enter name";
+            }
+            else if (StudenName.Length < 3)
+            {
+                NameErrorMessage = "Your name is too small";
             }
             else if (StudenName.Length > 50)
             {
@@ -271,19 +265,15 @@ namespace SudentManagementSystem
             {
                 AgeErrorMessage = "Your Age is too High";
             }
+            else if (Int32.Parse(StudenAge) < 10)
+            {
+                AgeErrorMessage = "Your Are too young for our course";
+            }
             else if (Int32.Parse(StudenAge) > 40)
             {
-                if (Int32.Parse(StudenAge) < 120 && Int32.Parse(StudenAge) > 40)
-                {
-                    AgeErrorMessage = "Your Are is older for our course";
-                }
-                else
-                {
-                    AgeErrorMessage = "Your Are No More, We are sorry for Your Death.";
-                }
-            }
+                AgeErrorMessage = "Your Are too older for our course";
+            }            
             return AgeErrorMessage;
-
         }
         public int CountDuplicateMobile(string mobile)
         {
@@ -305,7 +295,11 @@ namespace SudentManagementSystem
             if (StudenMobile.Length > 20)
             {
                 MobileErrorMessage = "Mobile Number is too Long";
-            }            
+            }
+            else if (StudenMobile.Length < 11)
+            {
+                MobileErrorMessage = "Mobile Number is too Long";
+            }
             return MobileErrorMessage;
         }        
 
@@ -313,8 +307,7 @@ namespace SudentManagementSystem
         {
             if (dataGridView1.Rows.Count > 0)
             {
-
-                tID = int.Parse(dataGridView1.SelectedRows[0].Cells[0].Value.ToString());
+                StudentID = int.Parse(dataGridView1.SelectedRows[0].Cells[0].Value.ToString());
                 StudentName.Text = dataGridView1.SelectedRows[0].Cells[1].Value.ToString();
                 Age.Text = dataGridView1.SelectedRows[0].Cells[2].Value.ToString();
                 Mobile.Text = dataGridView1.SelectedRows[0].Cells[3].Value.ToString();
