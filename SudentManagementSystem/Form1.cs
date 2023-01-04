@@ -7,8 +7,7 @@ namespace SudentManagementSystem
     public partial class Form1 : Form
     {
         public int StudentID; // used when we delete and updete
-        public string Gender; // used when select gender
-        public int rowId;
+        public string Gender; // used when select gender        
         // databae connection
         // db name: SMSDB
         SqlConnection DBconnection = new SqlConnection("Data Source=.; Initial Catalog=SMSDB; TrustServerCertificate=True; Integrated Security=True ");
@@ -19,11 +18,10 @@ namespace SudentManagementSystem
         }
         public void DisplayData()
         {
-            SqlDataAdapter sqad = new SqlDataAdapter("select * from Students", DBconnection);
-            DataTable dt = new DataTable();
-            sqad.Fill(dt);
-            dataGridView1.DataSource = dt;
-            var dat = dt;
+            SqlDataAdapter SQLselectQuery = new SqlDataAdapter("SELECT * FROM Students", DBconnection);
+            DataTable StudentDataTable = new DataTable();
+            SQLselectQuery.Fill(StudentDataTable);
+            StudentDataGridView.DataSource = StudentDataTable;            
         }
         private void AllClear()
         {
@@ -31,71 +29,131 @@ namespace SudentManagementSystem
             Age.Clear();
             Mobile.Clear();
             Email.Clear();
-            male.Checked = false;
-            female.Checked = false;
-            other.Checked = false;
+            Male.Checked = false;
+            Female.Checked = false;
+            Other.Checked = false;
             StudentClass.SelectedIndex = -1;
             Date.Value = DateTime.Today;
         }
 
         private void save_Click(object sender, EventArgs e)
         {
-            String NameError = NameValidate(StudentName.Text);
-            String AgeError = AgeValidate(Age.Text);
-            String EmailError = EmailValidate(Email.Text);
-            String MobileError = MobileValidate(Mobile.Text);
-            int DuplicateEmail = CountDuplicateEmail(Email.Text);
-            int DuplicateMobile = CountDuplicateMobile(Email.Text);
+            bool IsAllValid = true;
+            String ErrorMessage = string.Empty;
+            
+            if (IsAllValid)
+            {
+                ErrorMessage = NameValidate(StudentName.Text);
 
-            if (NameError != "")
-            {
-                MessageBox.Show(NameError);
-                return;
+                if (ErrorMessage != "")
+                {
+                    IsAllValid = false;                   
+                
+                }
+                else
+                {
+                    IsAllValid = true;
+                }
             }
-            else if (AgeError != "")
+
+            if (IsAllValid)
             {
-                MessageBox.Show(AgeError);
-                return;
+               ErrorMessage = AgeValidate(Age.Text);
+                if (ErrorMessage != "")
+                {
+                    IsAllValid = false;
+                }
+                else
+                {
+                    IsAllValid = true;
+                }
             }
-            else if (EmailError != "")
+
+            if (IsAllValid)
             {
-                MessageBox.Show(EmailError);
-                return;
+                ErrorMessage = EmailValidate(Email.Text);
+
+                if (ErrorMessage != "")
+                {
+                    IsAllValid = false;
+                }
+                else
+                {
+                    IsAllValid = true;
+                    if(CountDuplicateEmail(Email.Text) > 0)
+                    {
+                        IsAllValid = false;
+                        ErrorMessage = ("This Email is already used.");
+                    }
+                    else
+                    {
+                        IsAllValid = true;
+                    }
+                }
             }
-            else if (DuplicateEmail > 0)
+
+            if (IsAllValid)
             {
-                MessageBox.Show("This eamil is already used");
-                return;
+                ErrorMessage = MobileValidate(Mobile.Text);
+
+                if (ErrorMessage != "")
+                {
+                    IsAllValid = false;
+                }
+                else
+                {
+                    IsAllValid = true;
+                    if(CountDuplicateMobile(Mobile.Text) > 0)
+                    {
+                        IsAllValid = false;
+                        ErrorMessage = ("This Mobile is already used");
+                    }
+                    else
+                    {
+                        IsAllValid = true;
+                    }
+                }
             }
-            else if (StudentClass.SelectedIndex == -1)
+
+            if (IsAllValid)
             {
-                MessageBox.Show("Select Your class");
-                return;
+                if (Male.Checked != true && Female.Checked != true && Other.Checked != true)
+                {
+                    IsAllValid = false;
+                    ErrorMessage = ("Select Your Gender.");
+                }
+                else
+                {
+                    IsAllValid = true;
+                }
             }
-            else if (MobileError != "")
+
+            if (IsAllValid)
             {
-                MessageBox.Show(MobileError);
-                return;
+                if (Date.Value > DateTime.Today)
+                {
+                    IsAllValid = false;                    
+                    Date.Value = DateTime.Today;
+                    ErrorMessage = ("you cannot use future date and time.");
+                }
+                else
+                {
+                    IsAllValid = true;
+                }
             }
-            else if (DuplicateMobile > 0)
+
+            
+            if(IsAllValid)
             {
-                MessageBox.Show("This Mobile is already used");
-                return;
-            }
-            else if (male.Checked != true && female.Checked != true && other.Checked != true)
-            {
-                MessageBox.Show("Select Your Gender");
-                return;
-            }
-            else if (Date.Value > DateTime.Today)
-            {
-                MessageBox.Show("You Can Not Set Future Date");
-                Date.Value = DateTime.Today;
-                return;
-            }
-            else
-            {
-                string sqlQuery = "INSERT INTO Students (Name, Age, MobileNumber, Email, Gender, Class, Ad_date) VALUES ('" + StudentName.Text + "' ,'" + Convert.ToInt32(Age.Text) + "','" + Mobile.Text + "','" + Email.Text + "','" + Gender + "','" + StudentClass.SelectedItem + "','" + Date.Value.ToShortDateString() + "')";
+                string sqlQuery = "INSERT INTO Students " +
+                    "(Name, Age, MobileNumber, Email, Gender, Class, Ad_date) VALUES " +
+                    "('" + StudentName.Text +
+                    "' ,'" + Convert.ToInt32(Age.Text) +
+                    "','" + Mobile.Text +
+                    "','" + Email.Text +
+                    "','" + Gender +
+                    "','" + StudentClass.SelectedItem +
+                    "','" + Date.Value.ToShortDateString() + "')";
 
                 DBconnection.Open();
                 SqlCommand cm = new SqlCommand(sqlQuery, DBconnection);
@@ -105,60 +163,124 @@ namespace SudentManagementSystem
                 }
                 else
                 {
-                    MessageBox.Show("Error!!!");
+                    MessageBox.Show("Something Error!!! Try again");
                 }
                 DBconnection.Close();
                 AllClear();
                 DisplayData();
             }
+            else
+            {
+                MessageBox.Show(ErrorMessage);
+            }
         }
 
         private void update_Click(object sender, EventArgs e)
         {
-            String NameError = NameValidate(StudentName.Text);
-            String AgeError = AgeValidate(Age.Text);
-            String EmailError = EmailValidate(Email.Text);
-            String MobileError = MobileValidate(Mobile.Text);
-            int DuplicateEmail = CountDuplicateEmail(Email.Text);
-            int DuplicateMobile = CountDuplicateMobile(Email.Text);
-            if (NameError != "")
+            bool IsAllValid = true;
+            String ErrorMessage = string.Empty;
+
+            if (IsAllValid)
             {
-                MessageBox.Show(NameError);
+                ErrorMessage = NameValidate(StudentName.Text);
+
+                if (ErrorMessage != "")
+                {
+                    IsAllValid = false;
+
+                }
+                else
+                {
+                    IsAllValid = true;
+                }
             }
-            else if (AgeError != "")
+
+            if (IsAllValid)
             {
-                MessageBox.Show(AgeError);
+                ErrorMessage = AgeValidate(Age.Text);
+                if (ErrorMessage != "")
+                {
+                    IsAllValid = false;
+                }
+                else
+                {
+                    IsAllValid = true;
+                }
             }
-            else if (EmailError != "")
+
+            if (IsAllValid)
             {
-                MessageBox.Show(EmailError);
+                ErrorMessage = EmailValidate(Email.Text);
+
+                if (ErrorMessage != "")
+                {
+                    IsAllValid = false;
+                }
+                else
+                {
+                    IsAllValid = true;
+                    if (CountDuplicateEmail(Email.Text) > 1)
+                    {
+                        IsAllValid = false;
+                        ErrorMessage = ("This Email is already used.");
+                    }
+                    else
+                    {
+                        IsAllValid = true;
+                    }
+                }
             }
-            else if (DuplicateEmail > 1)
+
+            if (IsAllValid)
             {
-                MessageBox.Show("This eamil is already used");
+                ErrorMessage = MobileValidate(Mobile.Text);
+
+                if (ErrorMessage != "")
+                {
+                    IsAllValid = false;
+                }
+                else
+                {
+                    IsAllValid = true;
+                    if (CountDuplicateMobile(Mobile.Text) > 1)
+                    {
+                        IsAllValid = false;
+                        ErrorMessage = ("This Mobile is already used");
+                    }
+                    else
+                    {
+                        IsAllValid = true;
+                    }
+                }
             }
-            else if (StudentClass.SelectedIndex == -1)
+
+            if (IsAllValid)
             {
-                MessageBox.Show("Select Your class");
+                if (Male.Checked != true && Female.Checked != true && Other.Checked != true)
+                {
+                    IsAllValid = false;
+                    ErrorMessage = ("Select Your Gender.");
+                }
+                else
+                {
+                    IsAllValid = true;
+                }
             }
-            else if (MobileError != "")
+
+            if (IsAllValid)
             {
-                MessageBox.Show(MobileError);
+                if (Date.Value > DateTime.Today)
+                {
+                    IsAllValid = false;
+                    Date.Value = DateTime.Today;
+                    ErrorMessage = ("you cannot use future date and time.");
+                }
+                else
+                {
+                    IsAllValid = true;
+                }
             }
-            else if (DuplicateMobile > 1)
-            {
-                MessageBox.Show("This Mobile is already used");
-            }
-            else if (Date.Value > DateTime.Today)
-            {
-                MessageBox.Show("You Can Not Set Future Date");
-                Date.Value = DateTime.Today;
-            }
-            else if (male.Checked != true && female.Checked != true && other.Checked != true)
-            {
-                MessageBox.Show("Select Your Gender");
-            }
-            else
+            if (IsAllValid)
             {
                 string sqlQuery = "update Students set Name = " + "'" + StudentName.Text +
                                     "' , " + "Age = " + "'" + Convert.ToInt32(Age.Text) + 
@@ -174,22 +296,30 @@ namespace SudentManagementSystem
                 {
                     MessageBox.Show("Update Successfuly");
                 }
+                else
+                {
+                    MessageBox.Show("Something Error!!! Try again");
+                }
                 DBconnection.Close();
                 AllClear();
                 DisplayData();
+            }
+            else
+            {
+                MessageBox.Show(ErrorMessage);
             }
         }
 
         private void delete_Click(object sender, EventArgs e)
         {
             DBconnection.Open();
-            int TotalRow = dataGridView1.Rows.Count;
+            int TotalRow = StudentDataGridView.Rows.Count;
             for (int i = 0; i < TotalRow; i++)
             {
-                DataGridViewRow gridr = dataGridView1.Rows[i];
+                DataGridViewRow gridr = StudentDataGridView.Rows[i];
                 if (gridr.Selected == true)
                 {
-                    string sqlQuery = "DELETE FROM Students WHERE ID= '" + dataGridView1.Rows[i].Cells[0].Value + "'";
+                    string sqlQuery = "DELETE FROM Students WHERE ID= '" + StudentDataGridView.Rows[i].Cells[0].Value + "'";
                     SqlCommand cmd = new SqlCommand(sqlQuery, DBconnection);
                     cmd.ExecuteNonQuery();
                 }
@@ -232,7 +362,7 @@ namespace SudentManagementSystem
         public int CountDuplicateEmail(string email)
         {
             int count = 0;
-            foreach (DataGridViewRow row in dataGridView1.Rows)
+            foreach (DataGridViewRow row in StudentDataGridView.Rows)
             {
                 var gridEmail = row.Cells[4].Value.ToString();
                 if (gridEmail == email)
@@ -272,7 +402,7 @@ namespace SudentManagementSystem
 
             if (StudentAge == "")
             {
-                AgeErrorMessage = "Age Feild is empty";
+                AgeErrorMessage = "Age Required";
             }
             else
             {
@@ -292,9 +422,9 @@ namespace SudentManagementSystem
                         AgeErrorMessage = string.Empty;
                     }
                 }
-                catch (FormatException e)
+                catch (FormatException)
                 {
-                    AgeErrorMessage = "Enter the Correct age";                   
+                    AgeErrorMessage = "Enter number for age";                   
                 }                
             }         
             return AgeErrorMessage;
@@ -302,16 +432,12 @@ namespace SudentManagementSystem
         public int CountDuplicateMobile(string mobile)
         {
             int count = 0;
-            foreach(DataGridViewRow row in dataGridView1.Rows)
+            foreach(DataGridViewRow row in StudentDataGridView.Rows)
             {
                 var gridMobile = row.Cells[3].Value.ToString();
                 if(gridMobile == mobile)
                 {
                     count++;
-                }
-                else
-                {
-                    count = count;
                 }
             }
             return count;
@@ -342,14 +468,14 @@ namespace SudentManagementSystem
 
         private void dataGridView1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            if (dataGridView1.Rows.Count > 0)
+            if (StudentDataGridView.Rows.Count > 0)
             {
-                StudentID = int.Parse(dataGridView1.SelectedRows[0].Cells[0].Value.ToString());
-                StudentName.Text = dataGridView1.SelectedRows[0].Cells[1].Value.ToString();
-                Age.Text = dataGridView1.SelectedRows[0].Cells[2].Value.ToString();
-                Mobile.Text = dataGridView1.SelectedRows[0].Cells[3].Value.ToString();
-                Email.Text = dataGridView1.SelectedRows[0].Cells[4].Value.ToString();
-                string sclass = dataGridView1.SelectedRows[0].Cells[6].Value.ToString();
+                StudentID = int.Parse(StudentDataGridView.SelectedRows[0].Cells[0].Value.ToString());
+                StudentName.Text = StudentDataGridView.SelectedRows[0].Cells[1].Value.ToString();
+                Age.Text = StudentDataGridView.SelectedRows[0].Cells[2].Value.ToString();
+                Mobile.Text = StudentDataGridView.SelectedRows[0].Cells[3].Value.ToString();
+                Email.Text = StudentDataGridView.SelectedRows[0].Cells[4].Value.ToString();
+                string sclass = StudentDataGridView.SelectedRows[0].Cells[6].Value.ToString();
                 if (sclass == "7th Class")
                 {
                     StudentClass.SelectedIndex = 0;
@@ -370,22 +496,22 @@ namespace SudentManagementSystem
                 {
                     StudentClass.SelectedIndex = -1;
                 }
-                string gendercheck = dataGridView1.SelectedRows[0].Cells[5].Value.ToString();
-                string Dtc = dataGridView1.SelectedRows[0].Cells[7].Value.ToString();
+                string gendercheck = StudentDataGridView.SelectedRows[0].Cells[5].Value.ToString();
+                string Dtc = StudentDataGridView.SelectedRows[0].Cells[7].Value.ToString();
                 string[] subs1 = Dtc.Split(' ');
                 string[] subs = subs1[0].Split("/");
                 Date.Value = new DateTime(Int16.Parse(subs[2]), Int16.Parse(subs[0]), Int16.Parse(subs[1]));
                 if (gendercheck == "Male")
                 {
-                    male.Checked = true;
+                    Male.Checked = true;
                 }
                 else if (gendercheck == "Female")
                 {
-                    female.Checked = true;
+                    Female.Checked = true;
                 }
                 else
                 {
-                    other.Checked = true;
+                    Other.Checked = true;
                 }
             }
         }
@@ -408,19 +534,19 @@ namespace SudentManagementSystem
         private void txtSearch_KeyUp(object sender, KeyEventArgs e)
         {
             string SearchValue = txtSearch.Text;
-            foreach (DataGridViewRow row in dataGridView1.Rows)
+            foreach (DataGridViewRow row in StudentDataGridView.Rows)
             {
                 var SearchName = row.Cells[1].Value.ToString();
                 if (!SearchName.Contains(SearchValue))
                 {
-                    CurrencyManager currencyManager1 = (CurrencyManager)BindingContext[dataGridView1.DataSource];
+                    CurrencyManager currencyManager1 = (CurrencyManager)BindingContext[StudentDataGridView.DataSource];
                     currencyManager1.SuspendBinding();
                     row.Visible = false;
                     currencyManager1.ResumeBinding();
                 }
                 else
                 {
-                    CurrencyManager currencyManager1 = (CurrencyManager)BindingContext[dataGridView1.DataSource];
+                    CurrencyManager currencyManager1 = (CurrencyManager)BindingContext[StudentDataGridView.DataSource];
                     currencyManager1.SuspendBinding();
                     row.Visible = true;
                     currencyManager1.ResumeBinding();

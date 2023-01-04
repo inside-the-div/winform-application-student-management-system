@@ -31,9 +31,9 @@
             this.btnRefresh = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
             this.txtSearch = new System.Windows.Forms.TextBox();
-            this.other = new System.Windows.Forms.RadioButton();
-            this.male = new System.Windows.Forms.RadioButton();
-            this.female = new System.Windows.Forms.RadioButton();
+            this.Other = new System.Windows.Forms.RadioButton();
+            this.Male = new System.Windows.Forms.RadioButton();
+            this.Female = new System.Windows.Forms.RadioButton();
             this.Exit = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -60,9 +60,9 @@
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.StudentName = new System.Windows.Forms.TextBox();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.StudentDataGridView = new System.Windows.Forms.DataGridView();
             this.btnHelp = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.StudentDataGridView)).BeginInit();
             this.SuspendLayout();
             // 
             // btnRefresh
@@ -97,44 +97,44 @@
             this.txtSearch.TabIndex = 38;
             this.txtSearch.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtSearch_KeyUp);
             // 
-            // other
+            // Other
             // 
-            this.other.AutoSize = true;
-            this.other.Location = new System.Drawing.Point(723, 83);
-            this.other.Name = "other";
-            this.other.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.other.Size = new System.Drawing.Size(58, 19);
-            this.other.TabIndex = 32;
-            this.other.TabStop = true;
-            this.other.Text = "Other";
-            this.other.UseVisualStyleBackColor = true;
-            this.other.CheckedChanged += new System.EventHandler(this.other_CheckedChanged);
+            this.Other.AutoSize = true;
+            this.Other.Location = new System.Drawing.Point(723, 83);
+            this.Other.Name = "Other";
+            this.Other.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.Other.Size = new System.Drawing.Size(58, 19);
+            this.Other.TabIndex = 32;
+            this.Other.TabStop = true;
+            this.Other.Text = "Other";
+            this.Other.UseVisualStyleBackColor = true;
+            this.Other.CheckedChanged += new System.EventHandler(this.other_CheckedChanged);
             // 
-            // male
+            // Male
             // 
-            this.male.AutoSize = true;
-            this.male.Location = new System.Drawing.Point(597, 83);
-            this.male.Name = "male";
-            this.male.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.male.Size = new System.Drawing.Size(52, 19);
-            this.male.TabIndex = 28;
-            this.male.TabStop = true;
-            this.male.Text = "Male";
-            this.male.UseVisualStyleBackColor = true;
-            this.male.CheckedChanged += new System.EventHandler(this.male_CheckedChanged);
+            this.Male.AutoSize = true;
+            this.Male.Location = new System.Drawing.Point(597, 83);
+            this.Male.Name = "Male";
+            this.Male.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.Male.Size = new System.Drawing.Size(52, 19);
+            this.Male.TabIndex = 28;
+            this.Male.TabStop = true;
+            this.Male.Text = "Male";
+            this.Male.UseVisualStyleBackColor = true;
+            this.Male.CheckedChanged += new System.EventHandler(this.male_CheckedChanged);
             // 
-            // female
+            // Female
             // 
-            this.female.AutoSize = true;
-            this.female.Location = new System.Drawing.Point(654, 83);
-            this.female.Name = "female";
-            this.female.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.female.Size = new System.Drawing.Size(65, 19);
-            this.female.TabIndex = 30;
-            this.female.TabStop = true;
-            this.female.Text = "Female";
-            this.female.UseVisualStyleBackColor = true;
-            this.female.CheckedChanged += new System.EventHandler(this.female_CheckedChanged);
+            this.Female.AutoSize = true;
+            this.Female.Location = new System.Drawing.Point(654, 83);
+            this.Female.Name = "Female";
+            this.Female.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.Female.Size = new System.Drawing.Size(65, 19);
+            this.Female.TabIndex = 30;
+            this.Female.TabStop = true;
+            this.Female.Text = "Female";
+            this.Female.UseVisualStyleBackColor = true;
+            this.Female.CheckedChanged += new System.EventHandler(this.female_CheckedChanged);
             // 
             // Exit
             // 
@@ -224,9 +224,9 @@
             this.label5.Location = new System.Drawing.Point(407, 108);
             this.label5.Name = "label5";
             this.label5.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.label5.Size = new System.Drawing.Size(38, 15);
+            this.label5.Size = new System.Drawing.Size(33, 15);
             this.label5.TabIndex = 26;
-            this.label5.Text = "Class*";
+            this.label5.Text = "Class";
             // 
             // label3
             // 
@@ -411,12 +411,12 @@
             this.StudentName.Size = new System.Drawing.Size(194, 23);
             this.StudentName.TabIndex = 17;
             // 
-            // dataGridView1
+            // StudentDataGridView
             // 
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.StudentDataGridView.AllowUserToAddRows = false;
+            this.StudentDataGridView.AllowUserToDeleteRows = false;
+            this.StudentDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.StudentDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ID,
             this.Column1,
             this.Column3,
@@ -425,16 +425,16 @@
             this.Column7,
             this.Column8,
             this.Column9});
-            this.dataGridView1.Location = new System.Drawing.Point(4, 173);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.dataGridView1.RowHeadersVisible = false;
-            this.dataGridView1.RowTemplate.Height = 25;
-            this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(793, 247);
-            this.dataGridView1.TabIndex = 16;
-            this.dataGridView1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.dataGridView1_MouseDoubleClick);
+            this.StudentDataGridView.Location = new System.Drawing.Point(4, 173);
+            this.StudentDataGridView.Name = "StudentDataGridView";
+            this.StudentDataGridView.ReadOnly = true;
+            this.StudentDataGridView.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.StudentDataGridView.RowHeadersVisible = false;
+            this.StudentDataGridView.RowTemplate.Height = 25;
+            this.StudentDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.StudentDataGridView.Size = new System.Drawing.Size(793, 247);
+            this.StudentDataGridView.TabIndex = 16;
+            this.StudentDataGridView.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.dataGridView1_MouseDoubleClick);
             // 
             // btnHelp
             // 
@@ -455,9 +455,9 @@
             this.Controls.Add(this.btnRefresh);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.txtSearch);
-            this.Controls.Add(this.other);
-            this.Controls.Add(this.male);
-            this.Controls.Add(this.female);
+            this.Controls.Add(this.Other);
+            this.Controls.Add(this.Male);
+            this.Controls.Add(this.Female);
             this.Controls.Add(this.Exit);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -476,11 +476,11 @@
             this.Controls.Add(this.update);
             this.Controls.Add(this.save);
             this.Controls.Add(this.StudentName);
-            this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.StudentDataGridView);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.Name = "Form1";
             this.Text = "SudentManagementSystem";
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.StudentDataGridView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -491,9 +491,9 @@
         private Button btnRefresh;
         private Label label7;
         private TextBox txtSearch;
-        private RadioButton other;
-        private RadioButton male;
-        private RadioButton female;
+        private RadioButton Other;
+        private RadioButton Male;
+        private RadioButton Female;
         private Button Exit;
         private Label label2;
         private Label label1;
@@ -520,7 +520,7 @@
         private DataGridViewTextBoxColumn Column1;
         private DataGridViewTextBoxColumn ID;
         private TextBox StudentName;
-        private DataGridView dataGridView1;
+        private DataGridView StudentDataGridView;
         private Button btnHelp;
     }
 }
