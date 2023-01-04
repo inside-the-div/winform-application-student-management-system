@@ -1,3 +1,4 @@
+drop database SMSDB
 CREATE DATABASE SMSDB
 GO
 USE [SMSDB]

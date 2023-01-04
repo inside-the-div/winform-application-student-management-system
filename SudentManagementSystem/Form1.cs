@@ -298,7 +298,7 @@ namespace SudentManagementSystem
             }
             else if (StudenMobile.Length < 11)
             {
-                MobileErrorMessage = "Mobile Number is too Long";
+                MobileErrorMessage = "Mobile Number is too low";
             }
             return MobileErrorMessage;
         }        
