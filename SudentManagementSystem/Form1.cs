@@ -103,6 +103,10 @@ namespace SudentManagementSystem
                 {
                     MessageBox.Show("Saved Successfuly");
                 }
+                else
+                {
+                    MessageBox.Show("Error!!!");
+                }
                 DBconnection.Close();
                 AllClear();
                 DisplayData();
@@ -219,6 +223,10 @@ namespace SudentManagementSystem
             {
                 NameErrorMessage = "Your name is too long";
             }
+            else
+            {
+                NameErrorMessage = string.Empty;
+            }
             return NameErrorMessage;
         }
         public int CountDuplicateEmail(string email)
@@ -237,7 +245,9 @@ namespace SudentManagementSystem
         public string EmailValidate(string StudenEmail)
         {
             string EmailErrorMessage = string.Empty;
+            StudenEmail= StudenEmail.Trim();
             string email = Email.Text;
+
             System.Text.RegularExpressions.Regex expr = new System.Text.RegularExpressions.Regex(@"^[a-zA-Z][\w\.-]{2,28}[a-zA-Z0-9]@[a-zA-Z0-9][\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]$");
             if (!expr.IsMatch(email))
             {
@@ -247,32 +257,46 @@ namespace SudentManagementSystem
             {
                 EmailErrorMessage = "Your Email is too long";
             }
+            else
+            {
+                EmailErrorMessage = string.Empty;
+            }
             return EmailErrorMessage;
         }
         
-        public string AgeValidate(string StudenAge)
+        public string AgeValidate(string StudentAge)
         {
+            int StudentAgeInt;
             string AgeErrorMessage = string.Empty;
-            try
+            string age = StudentAge.Trim();
+
+            if (StudentAge == "")
             {
-                Int32.Parse(StudenAge);
+                AgeErrorMessage = "Age Feild is empty";
             }
-            catch (FormatException e)
+            else
             {
-                AgeErrorMessage = "Enter the Correct age";
-            }
-            if (StudenAge.Length > 50)
-            {
-                AgeErrorMessage = "Your Age is too High";
-            }
-            else if (Int32.Parse(StudenAge) < 10)
-            {
-                AgeErrorMessage = "Your Are too young for our course";
-            }
-            else if (Int32.Parse(StudenAge) > 40)
-            {
-                AgeErrorMessage = "Your Are too older for our course";
-            }            
+                try
+                {
+                    StudentAgeInt = Int32.Parse(StudentAge);
+                    if (StudentAgeInt < 10)
+                    {
+                        AgeErrorMessage = "Your Are too young for our course";
+                    }
+                    else if (StudentAgeInt > 40)
+                    {
+                        AgeErrorMessage = "Your Are too older for our course";
+                    }
+                    else
+                    {
+                        AgeErrorMessage = string.Empty;
+                    }
+                }
+                catch (FormatException e)
+                {
+                    AgeErrorMessage = "Enter the Correct age";                   
+                }                
+            }         
             return AgeErrorMessage;
         }
         public int CountDuplicateMobile(string mobile)
@@ -285,6 +309,10 @@ namespace SudentManagementSystem
                 {
                     count++;
                 }
+                else
+                {
+                    count = count;
+                }
             }
             return count;
         }
@@ -292,13 +320,22 @@ namespace SudentManagementSystem
         public string MobileValidate(string StudenMobile)
         {
             string MobileErrorMessage = string.Empty;
-            if (StudenMobile.Length > 20)
+            StudenMobile= StudenMobile.Trim();
+            if (StudenMobile == "")
+            {
+                MobileErrorMessage = "Mobile Number required";
+            }
+            else if (StudenMobile.Length > 20)
             {
                 MobileErrorMessage = "Mobile Number is too Long";
             }
             else if (StudenMobile.Length < 11)
             {
                 MobileErrorMessage = "Mobile Number is too low";
+            }
+            else
+            {
+                MobileErrorMessage = string.Empty;
             }
             return MobileErrorMessage;
         }        
@@ -370,11 +407,11 @@ namespace SudentManagementSystem
 
         private void txtSearch_KeyUp(object sender, KeyEventArgs e)
         {
-            string Svalue = txtSearch.Text;
+            string SearchValue = txtSearch.Text;
             foreach (DataGridViewRow row in dataGridView1.Rows)
             {
-                var sname = row.Cells[1].Value.ToString();
-                if (!sname.Contains(Svalue))
+                var SearchName = row.Cells[1].Value.ToString();
+                if (!SearchName.Contains(SearchValue))
                 {
                     CurrencyManager currencyManager1 = (CurrencyManager)BindingContext[dataGridView1.DataSource];
                     currencyManager1.SuspendBinding();
