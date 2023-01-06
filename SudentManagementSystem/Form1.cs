@@ -14,7 +14,8 @@ namespace SudentManagementSystem
         public Form1()
         {
             InitializeComponent();
-            DisplayData();            
+            DisplayData();
+            Date.Value = DateTime.Today;
         }
         public void DisplayData()
         {
