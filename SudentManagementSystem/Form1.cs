@@ -14,7 +14,7 @@ namespace SudentManagementSystem
         public Form1()
         {
             InitializeComponent();
-            DisplayData();
+            DisplayData();            
         }
         public void DisplayData()
         {
@@ -106,12 +106,24 @@ namespace SudentManagementSystem
                     if(CountDuplicateMobile(Mobile.Text) > 0)
                     {
                         IsAllValid = false;
-                        ErrorMessage = ("This Mobile is already used");
+                        ErrorMessage = ("This Mobile Number is already used");
                     }
                     else
                     {
                         IsAllValid = true;
                     }
+                }
+            }
+            if (IsAllValid)
+            {
+                if (StudentClass.SelectedIndex == -1)
+                {
+                    IsAllValid = false;
+                    ErrorMessage = ("Select Your Class");
+                }
+                else
+                {
+                    IsAllValid = true;
                 }
             }
 
@@ -207,6 +219,18 @@ namespace SudentManagementSystem
                     IsAllValid = true;
                 }
             }
+            if (IsAllValid)
+            {
+                if (StudentClass.SelectedIndex == -1)
+                {
+                    IsAllValid = false;
+                    ErrorMessage = ("Select Your Class");
+                }
+                else
+                {
+                    IsAllValid = true;
+                }
+            }
 
             if (IsAllValid)
             {
@@ -245,7 +269,7 @@ namespace SudentManagementSystem
                     if (CountDuplicateMobile(Mobile.Text) > 1)
                     {
                         IsAllValid = false;
-                        ErrorMessage = ("This Mobile is already used");
+                        ErrorMessage = ("This Mobile number is already used");
                     }
                     else
                     {
@@ -343,15 +367,15 @@ namespace SudentManagementSystem
             string NameErrorMessage = string.Empty;
             if (StudenName == "")
             {
-                NameErrorMessage = "You must enter name";
+                NameErrorMessage = "You must enter a name";
             }
             else if (StudenName.Length < 3)
             {
-                NameErrorMessage = "Your name is too small";
+                NameErrorMessage = "Your name should be minimum 3 characters long";
             }
             else if (StudenName.Length > 50)
             {
-                NameErrorMessage = "Your name is too long";
+                NameErrorMessage = "Your name should be between 3-50 characters long";
             }
             else
             {
@@ -411,11 +435,11 @@ namespace SudentManagementSystem
                     StudentAgeInt = Int32.Parse(StudentAge);
                     if (StudentAgeInt < 10)
                     {
-                        AgeErrorMessage = "Your Are too young for our course";
+                        AgeErrorMessage = "Age must be minimum of 10 years";
                     }
                     else if (StudentAgeInt > 40)
                     {
-                        AgeErrorMessage = "Your Are too older for our course";
+                        AgeErrorMessage = "Age should be between 10 to 40 years";
                     }
                     else
                     {
@@ -453,11 +477,11 @@ namespace SudentManagementSystem
             }
             else if (StudenMobile.Length > 20)
             {
-                MobileErrorMessage = "Mobile Number is too Long";
+                MobileErrorMessage = "The mobile number needs to be between 11-20 digits";
             }
             else if (StudenMobile.Length < 11)
             {
-                MobileErrorMessage = "Mobile Number is too low";
+                MobileErrorMessage = "The mobile number needs to be a minimum of 11 digits";
             }
             else
             {
@@ -533,11 +557,12 @@ namespace SudentManagementSystem
 
         private void txtSearch_KeyUp(object sender, KeyEventArgs e)
         {
-            string SearchValue = txtSearch.Text;
+            string SearchValue = txtSearch.Text.Trim().ToLower();        
             foreach (DataGridViewRow row in StudentDataGridView.Rows)
             {
                 var SearchName = row.Cells[1].Value.ToString();
-                if (!SearchName.Contains(SearchValue))
+                var SearchNameLower = SearchName.ToLower();
+                if (!SearchNameLower.Contains(SearchValue))
                 {
                     CurrencyManager currencyManager1 = (CurrencyManager)BindingContext[StudentDataGridView.DataSource];
                     currencyManager1.SuspendBinding();

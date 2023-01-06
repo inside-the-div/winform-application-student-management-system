@@ -224,9 +224,9 @@
             this.label5.Location = new System.Drawing.Point(407, 108);
             this.label5.Name = "label5";
             this.label5.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.label5.Size = new System.Drawing.Size(33, 15);
+            this.label5.Size = new System.Drawing.Size(38, 15);
             this.label5.TabIndex = 26;
-            this.label5.Text = "Class";
+            this.label5.Text = "Class*";
             // 
             // label3
             // 
@@ -277,6 +277,7 @@
             // 
             // StudentClass
             // 
+            this.StudentClass.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.StudentClass.FormattingEnabled = true;
             this.StudentClass.Items.AddRange(new object[] {
             "7th Class",
