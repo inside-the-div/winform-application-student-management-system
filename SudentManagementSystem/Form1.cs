@@ -349,6 +349,7 @@ namespace SudentManagementSystem
                     cmd.ExecuteNonQuery();
                 }
             }
+            AllClear();
             DisplayData();
             MessageBox.Show("Data Deleted.");
             DBconnection.Close();
@@ -365,6 +366,7 @@ namespace SudentManagementSystem
         }
         public string NameValidate(string StudenName)
         {
+            StudenName= StudenName.Trim();
             string NameErrorMessage = string.Empty;
             if (StudenName == "")
             {
@@ -493,52 +495,51 @@ namespace SudentManagementSystem
 
         private void dataGridView1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            if (StudentDataGridView.Rows.Count > 0)
+          
+            StudentID = int.Parse(StudentDataGridView.SelectedRows[0].Cells[0].Value.ToString());
+            StudentName.Text = StudentDataGridView.SelectedRows[0].Cells[1].Value.ToString();
+            Age.Text = StudentDataGridView.SelectedRows[0].Cells[2].Value.ToString();
+            Mobile.Text = StudentDataGridView.SelectedRows[0].Cells[3].Value.ToString();
+            Email.Text = StudentDataGridView.SelectedRows[0].Cells[4].Value.ToString();
+            string sclass = StudentDataGridView.SelectedRows[0].Cells[6].Value.ToString();
+            if (sclass == "7th Class")
             {
-                StudentID = int.Parse(StudentDataGridView.SelectedRows[0].Cells[0].Value.ToString());
-                StudentName.Text = StudentDataGridView.SelectedRows[0].Cells[1].Value.ToString();
-                Age.Text = StudentDataGridView.SelectedRows[0].Cells[2].Value.ToString();
-                Mobile.Text = StudentDataGridView.SelectedRows[0].Cells[3].Value.ToString();
-                Email.Text = StudentDataGridView.SelectedRows[0].Cells[4].Value.ToString();
-                string sclass = StudentDataGridView.SelectedRows[0].Cells[6].Value.ToString();
-                if (sclass == "7th Class")
-                {
-                    StudentClass.SelectedIndex = 0;
-                }
-                else if (sclass == "8th Class")
-                {
-                    StudentClass.SelectedIndex = 1;
-                }
-                else if (sclass == "9th Class")
-                {
-                    StudentClass.SelectedIndex = 2;
-                }
-                else if (sclass == "10th Class")
-                {
-                    StudentClass.SelectedIndex = 3;
-                }
-                else
-                {
-                    StudentClass.SelectedIndex = -1;
-                }
-                string gendercheck = StudentDataGridView.SelectedRows[0].Cells[5].Value.ToString();
-                string Dtc = StudentDataGridView.SelectedRows[0].Cells[7].Value.ToString();
-                string[] subs1 = Dtc.Split(' ');
-                string[] subs = subs1[0].Split("/");
-                Date.Value = new DateTime(Int16.Parse(subs[2]), Int16.Parse(subs[0]), Int16.Parse(subs[1]));
-                if (gendercheck == "Male")
-                {
-                    Male.Checked = true;
-                }
-                else if (gendercheck == "Female")
-                {
-                    Female.Checked = true;
-                }
-                else
-                {
-                    Other.Checked = true;
-                }
+                StudentClass.SelectedIndex = 0;
             }
+            else if (sclass == "8th Class")
+            {
+                StudentClass.SelectedIndex = 1;
+            }
+            else if (sclass == "9th Class")
+            {
+                StudentClass.SelectedIndex = 2;
+            }
+            else if (sclass == "10th Class")
+            {
+                StudentClass.SelectedIndex = 3;
+            }
+            else
+            {
+                StudentClass.SelectedIndex = -1;
+            }
+            string gendercheck = StudentDataGridView.SelectedRows[0].Cells[5].Value.ToString();
+            string Dtc = StudentDataGridView.SelectedRows[0].Cells[7].Value.ToString();
+            string[] subs1 = Dtc.Split(' ');
+            string[] subs = subs1[0].Split("/");
+            Date.Value = new DateTime(Int16.Parse(subs[2]), Int16.Parse(subs[0]), Int16.Parse(subs[1]));
+            if (gendercheck == "Male")
+            {
+                Male.Checked = true;
+            }
+            else if (gendercheck == "Female")
+            {
+                Female.Checked = true;
+            }
+            else
+            {
+                Other.Checked = true;
+            }
+           
         }
 
         private void male_CheckedChanged(object sender, EventArgs e)
